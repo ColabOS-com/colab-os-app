@@ -1,0 +1,37 @@
+GNU AFFERO GENERAL PUBLIC LICENSE
+Version 3, 19 November 2007
+
+CoLAB OS Core — Copyright (C) 2026 CoLAB (labindustries@proton.me)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+────────────────────────────────────────────────────────────────────────
+
+ADDITIONAL TERMS (permitted under AGPL Section 7)
+
+1. COMMERCIAL USE OF COLAB OS PRO
+   The Pro modules (colabos-pro), templates (colabos-templates), and
+   hosted infrastructure (colabos-cloud) are NOT covered by this license.
+   They are proprietary and require a separate commercial license.
+   Contact: labindustries@proton.me
+
+2. ATTRIBUTION
+   Any publicly accessible fork or deployment of CoLAB OS Core must
+   display the text "Powered by CoLAB OS" with a link to colabos.store
+   in the application UI or documentation.
+
+3. PLUGIN SDK
+   The Plugin SDK (plugins/plugin-sdk.js) is licensed separately under
+   MIT to allow commercial plugins to be built without AGPL obligations.
+

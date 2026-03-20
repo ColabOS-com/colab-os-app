@@ -135,10 +135,10 @@ html,body{min-height:100vh;background:#05040f;color:#fff;font-family:'Syne',sans
 /* ── Supabase client ── */
 const SUPA_URL = 'https://spqnfqbykjihztidppyr.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwcW5mcWJ5a2ppaHp0aWRwcHlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzgzMDksImV4cCI6MjA4OTU1NDMwOX0.AhAEo3fu8svbNDRrj0W6WP-n1keDaVOKKvKJFNy4xkM';
-const supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+const _supaClient = window.supabase.createClient(SUPA_URL, SUPA_KEY);
 
 /* ── Check if already logged in ── */
-supabase.auth.getSession().then(function(result) {
+_supaClient.auth.getSession().then(function(result) {
   if (result.data.session) {
     window.location.href = 'index.html';
   }
@@ -190,7 +190,7 @@ async function signIn() {
   if (!email || !password) { showError('Please enter your email and password.'); return; }
 
   setLoading('btn-signin', true);
-  var result = await supabase.auth.signInWithPassword({ email: email, password: password });
+  var result = await _supaClient.auth.signInWithPassword({ email: email, password: password });
 
   if (result.error) {
     setLoading('btn-signin', false);
@@ -216,7 +216,7 @@ async function signUp() {
   if (password.length < 8) { showError('Password must be at least 8 characters.'); return; }
 
   setLoading('btn-signup', true);
-  var result = await supabase.auth.signUp({
+  var result = await _supaClient.auth.signUp({
     email:    email,
     password: password,
     options: {
@@ -247,7 +247,7 @@ async function signUp() {
 /* ── GitHub OAuth ── */
 async function signInGitHub() {
   clearMessages();
-  var result = await supabase.auth.signInWithOAuth({
+  var result = await _supaClient.auth.signInWithOAuth({
     provider: 'github',
     options: { redirectTo: window.location.origin + '/index.html' }
   });

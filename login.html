@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>CoLAB OS — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:#05040f;color:#fff;font-family:'Syne',sans-serif;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 15%,rgba(139,92,246,.2) 0%,transparent 70%),
+    radial-gradient(ellipse 55% 45% at 90% 85%,rgba(249,115,22,.12) 0%,transparent 65%),
+    #05040f}
+.wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+.card{width:100%;max-width:420px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:36px;backdrop-filter:blur(20px);position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(249,115,22,.4),transparent)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:32px;justify-content:center}
+.logo-mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#ff8c3a,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;box-shadow:0 0 30px rgba(249,115,22,.4)}
+.logo-mark span{color:#fff;font-size:16px;font-weight:800}
+.logo-name{font-size:20px;font-weight:800;letter-spacing:-.4px}
+.tabs{display:flex;gap:0;margin-bottom:28px;background:rgba(255,255,255,.05);border-radius:10px;padding:3px}
+.tab{flex:1;padding:8px;border-radius:8px;border:none;background:transparent;color:rgba(255,255,255,.4);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;font-family:'Syne',sans-serif}
+.tab.active{background:rgba(249,115,22,.15);color:#f97316;border:1px solid rgba(249,115,22,.25)}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:9.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:rgba(255,255,255,.35);font-family:'DM Mono',monospace;margin-bottom:6px}
+.field input{width:100%;padding:11px 14px;border-radius:9px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;font-size:14px;font-family:'Syne',sans-serif;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field input:focus{border-color:rgba(249,115,22,.45)}
+.field input::placeholder{color:rgba(255,255,255,.25)}
+.btn{width:100%;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:700;font-family:'Syne',sans-serif;transition:all .15s;margin-top:4px}
+.btn-primary{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;box-shadow:0 0 20px rgba(249,115,22,.3)}
+.btn-primary:hover{box-shadow:0 0 32px rgba(249,115,22,.5);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:.5;cursor:default;transform:none}
+.btn-github{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.8);display:flex;align-items:center;justify-content:center;gap:9px;margin-top:10px}
+.btn-github:hover{background:rgba(255,255,255,.11);color:#fff}
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+.divider span{font-size:11px;color:rgba(255,255,255,.25);font-family:'DM Mono',monospace}
+.error{padding:10px 14px;border-radius:8px;background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:#f87171;font-size:12px;font-family:'DM Mono',monospace;margin-bottom:14px;display:none}
+.success{padding:10px 14px;border-radius:8px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.2);color:#4ade80;font-size:12px;font-family:'DM Mono',monospace;margin-bottom:14px;display:none}
+.footer-note{text-align:center;margin-top:20px;font-size:11px;color:rgba(255,255,255,.25);font-family:'DM Mono',monospace;line-height:1.6}
+.footer-note a{color:rgba(249,115,22,.6);text-decoration:none}
+.footer-note a:hover{color:#f97316}
+.loading{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:480px){.card{padding:24px}.wrap{padding:20px}}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div class="wrap">
+  <div class="card">
+
+    <!-- Logo -->
+    <div class="logo">
+      <div class="logo-mark"><span>C</span></div>
+      <div class="logo-name">CoLAB OS</div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" id="tab-signin" onclick="switchTab('signin')">Sign In</button>
+      <button class="tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+    </div>
+
+    <!-- Error / Success messages -->
+    <div class="error" id="error-msg"></div>
+    <div class="success" id="success-msg"></div>
+
+    <!-- Sign In Form -->
+    <div id="form-signin">
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="signin-email" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signin-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')signIn()"/>
+      </div>
+      <button class="btn btn-primary" id="btn-signin" onclick="signIn()">Sign In →</button>
+
+      <div class="divider"><span>or</span></div>
+
+      <button class="btn btn-github" onclick="signInGitHub()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        Continue with GitHub
+      </button>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="form-signup" style="display:none">
+      <div class="field">
+        <label>Your Name</label>
+        <input type="text" id="signup-name" placeholder="Brandon" autocomplete="name"/>
+      </div>
+      <div class="field">
+        <label>Business Name</label>
+        <input type="text" id="signup-biz" placeholder="My Business"/>
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" autocomplete="email"/>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Min 8 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')signUp()"/>
+      </div>
+      <button class="btn btn-primary" id="btn-signup" onclick="signUp()">Create Account →</button>
+
+      <div class="divider"><span>or</span></div>
+
+      <button class="btn btn-github" onclick="signInGitHub()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        Continue with GitHub
+      </button>
+    </div>
+
+    <div class="footer-note">
+      By signing in you agree to our <a href="https://colabos.store/terms">Terms</a>.<br/>
+      Your data is stored securely and never sold.<br/>
+      <a href="https://colabos.store/get">← Back to colabos.store</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+'use strict';
+
+/* ── Supabase client ── */
+const SUPA_URL = 'https://spqnfqbykjihztidppyr.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNwcW5mcWJ5a2ppaHp0aWRwcHlyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NzgzMDksImV4cCI6MjA4OTU1NDMwOX0.AhAEo3fu8svbNDRrj0W6WP-n1keDaVOKKvKJFNy4xkM';
+const supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+
+/* ── Check if already logged in ── */
+supabase.auth.getSession().then(function(result) {
+  if (result.data.session) {
+    window.location.href = 'index.html';
+  }
+});
+
+/* ── Tab switching ── */
+function switchTab(tab) {
+  document.getElementById('form-signin').style.display = tab === 'signin' ? 'block' : 'none';
+  document.getElementById('form-signup').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('tab-signin').className = 'tab' + (tab === 'signin' ? ' active' : '');
+  document.getElementById('tab-signup').className = 'tab' + (tab === 'signup' ? ' active' : '');
+  clearMessages();
+}
+
+/* ── Helpers ── */
+function showError(msg) {
+  var el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  document.getElementById('success-msg').style.display = 'none';
+}
+function showSuccess(msg) {
+  var el = document.getElementById('success-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  document.getElementById('error-msg').style.display = 'none';
+}
+function clearMessages() {
+  document.getElementById('error-msg').style.display = 'none';
+  document.getElementById('success-msg').style.display = 'none';
+}
+function setLoading(btnId, loading) {
+  var btn = document.getElementById(btnId);
+  if (loading) {
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loading"></span>Please wait…';
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = btnId === 'btn-signin' ? 'Sign In →' : 'Create Account →';
+  }
+}
+
+/* ── Sign In ── */
+async function signIn() {
+  clearMessages();
+  var email    = document.getElementById('signin-email').value.trim();
+  var password = document.getElementById('signin-password').value;
+
+  if (!email || !password) { showError('Please enter your email and password.'); return; }
+
+  setLoading('btn-signin', true);
+  var result = await supabase.auth.signInWithPassword({ email: email, password: password });
+
+  if (result.error) {
+    setLoading('btn-signin', false);
+    showError(result.error.message || 'Sign in failed. Check your credentials.');
+    return;
+  }
+
+  /* Success — redirect to app */
+  window.location.href = 'index.html';
+}
+
+/* ── Sign Up ── */
+async function signUp() {
+  clearMessages();
+  var name     = document.getElementById('signup-name').value.trim();
+  var biz      = document.getElementById('signup-biz').value.trim();
+  var email    = document.getElementById('signup-email').value.trim();
+  var password = document.getElementById('signup-password').value;
+
+  if (!name)     { showError('Please enter your name.');     return; }
+  if (!email)    { showError('Please enter your email.');    return; }
+  if (!password) { showError('Please enter a password.');    return; }
+  if (password.length < 8) { showError('Password must be at least 8 characters.'); return; }
+
+  setLoading('btn-signup', true);
+  var result = await supabase.auth.signUp({
+    email:    email,
+    password: password,
+    options: {
+      data: { name: name, biz_name: biz || 'My Business' }
+    }
+  });
+
+  if (result.error) {
+    setLoading('btn-signup', false);
+    showError(result.error.message || 'Sign up failed. Please try again.');
+    return;
+  }
+
+  /* Save name + biz for onboarding */
+  localStorage.setItem('colab_user_name', name);
+  localStorage.setItem('colab_biz', JSON.stringify({ name: biz || 'My Business' }));
+
+  if (result.data.user && !result.data.session) {
+    /* Email confirmation required */
+    setLoading('btn-signup', false);
+    showSuccess('✓ Account created! Check your email to confirm, then sign in.');
+  } else {
+    /* Auto-confirmed — go straight to app */
+    window.location.href = 'index.html';
+  }
+}
+
+/* ── GitHub OAuth ── */
+async function signInGitHub() {
+  clearMessages();
+  var result = await supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: { redirectTo: window.location.origin + '/index.html' }
+  });
+  if (result.error) { showError(result.error.message); }
+}
+</script>
+</body>
+</html>

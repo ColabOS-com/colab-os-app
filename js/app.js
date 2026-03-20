@@ -70,6 +70,30 @@ var _cmdResults = [];
 ───────────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', function() {
 
+  /* 0. AUTH CHECK — redirect to login if not signed in */
+  if (window.AUTH && window.supabase) {
+    window.AUTH.getSession().then(function(session) {
+      if (!session) {
+        window.location.href = 'login.html';
+        return;
+      }
+      /* Session valid — load user data then boot */
+      window.DB.loadAll().then(function() {
+        _boot();
+      }).catch(function() {
+        _boot(); /* fallback to mock data if DB fails */
+      });
+    });
+  } else {
+    /* No Supabase (local/desktop) — boot directly */
+    _boot();
+  }
+});
+
+/* Extracted boot sequence — called after auth confirmed */
+function _boot() {
+  document.removeEventListener('DOMContentLoaded', arguments.callee);
+
   /* 1. Restore theme */
   var savedTheme = localStorage.getItem('colab_theme') || CONFIG.DEFAULTS.theme;
   _applyTheme(savedTheme, false);
@@ -104,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
   _renderCurrBtn();
 
   /* 7. Navigate to default page */
-  var savedPage = localStorage.getItem('colab_last_page') || 'dashboard';
+  var savedPage = localStorage.getItem('colab_last_page') || 'hub';
   var savedCatId = _findCatForPage(savedPage);
   if (savedCatId) {
     _activeCat  = savedCatId;
@@ -128,7 +152,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
   /* 12. Log app start */
   window.logActivity('CoLAB OS started', { version: CONFIG.PLATFORM.version });
-});
+
+  /* 13. Add sign out button to topbar */
+  var soBtn = document.getElementById('signout-btn');
+  if (soBtn) {
+    soBtn.onclick = function() {
+      if (window.AUTH) { window.AUTH.signOut(); }
+      else { window.location.href = 'login.html'; }
+    };
+  }
+}
 
 /* ─────────────────────────────────────────────────────────
    NAVIGATION

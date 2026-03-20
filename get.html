@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Get CoLAB OS — Stop Renting. Start Owning.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100vh;background:#05040f;color:#fff;font-family:'Syne',sans-serif;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 50% at 10% 15%,rgba(139,92,246,.2) 0%,transparent 70%),
+    radial-gradient(ellipse 55% 45% at 90% 85%,rgba(249,115,22,.12) 0%,transparent 65%),
+    #05040f}
+.wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+/* Back link */
+.back{position:absolute;top:24px;left:24px;display:flex;align-items:center;gap:7px;text-decoration:none;color:rgba(255,255,255,.35);font-size:12px;font-family:'DM Mono',monospace;transition:color .15s}
+.back:hover{color:rgba(255,255,255,.65)}
+/* Logo */
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:40px}
+.logo-mark{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#ff8c3a,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;box-shadow:0 0 40px rgba(249,115,22,.4)}
+.logo-mark span{color:#fff;font-size:18px;font-weight:800;letter-spacing:-1px}
+.logo-name{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.logo-ver{font-size:10px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;margin-top:2px}
+/* Headline */
+h1{font-size:clamp(26px,4vw,42px);font-weight:800;letter-spacing:-.8px;text-align:center;margin-bottom:10px;line-height:1.15}
+h1 span{color:#f97316}
+.sub{font-size:14px;color:rgba(255,255,255,.45);font-family:'DM Mono',monospace;text-align:center;margin-bottom:50px;max-width:440px}
+/* Cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;width:100%;max-width:680px;margin-bottom:32px}
+.card{border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);backdrop-filter:blur(20px);padding:32px 28px;display:flex;flex-direction:column;align-items:flex-start;transition:all .2s cubic-bezier(.16,1,.3,1);cursor:pointer;text-decoration:none;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(255,255,255,.08) 50%,transparent 90%)}
+.card:hover{transform:translateY(-3px);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.card.primary{border-color:rgba(249,115,22,.25);background:rgba(249,115,22,.07)}
+.card.primary::before{background:linear-gradient(90deg,transparent 10%,rgba(249,115,22,.35) 50%,transparent 90%)}
+.card.primary:hover{border-color:rgba(249,115,22,.45);box-shadow:0 20px 60px rgba(249,115,22,.15)}
+.card-badge{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:99px;margin-bottom:20px}
+.card.primary .card-badge{background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);color:#f97316}
+.card:not(.primary) .card-badge{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.45)}
+.card-icon{font-size:36px;margin-bottom:16px}
+.card-title{font-size:20px;font-weight:700;letter-spacing:-.3px;margin-bottom:8px}
+.card.primary .card-title{color:#fff}
+.card:not(.primary) .card-title{color:rgba(255,255,255,.85)}
+.card-desc{font-size:12px;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;line-height:1.65;margin-bottom:24px;flex:1}
+.card-cta{display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:9px;font-size:13px;font-weight:600;letter-spacing:-.2px;transition:all .15s;border:none;cursor:pointer}
+.card.primary .card-cta{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;box-shadow:0 0 20px rgba(249,115,22,.3)}
+.card.primary:hover .card-cta{box-shadow:0 0 32px rgba(249,115,22,.5)}
+.card:not(.primary) .card-cta{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7)}
+.card:not(.primary):hover .card-cta{background:rgba(255,255,255,.1);color:#fff}
+/* Specs row under download */
+.specs{display:flex;align-items:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+.spec{font-size:9.5px;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace;display:flex;align-items:center;gap:4px}
+.spec::before{content:'·';margin-right:2px}
+.spec:first-child::before{content:''}
+/* Trust strip */
+.trust{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.28);font-family:'DM Mono',monospace}
+.trust-item span{font-size:13px}
+/* Divider */
+.divider{width:1px;height:14px;background:rgba(255,255,255,.1)}
+/* Version tag */
+.version-row{display:flex;align-items:center;gap:8px;margin-bottom:18px}
+.v-tag{font-size:10px;font-family:'DM Mono',monospace;padding:3px 9px;border-radius:99px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80}
+.v-dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 2.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+/* Mobile */
+@media(max-width:560px){
+  .cards{grid-template-columns:1fr}
+  h1{font-size:26px}
+  .back{font-size:11px}
+}
+</style>
+</head>
+<body>
+<div id="bg"></div>
+<div class="wrap">
+
+  <a href="https://colabos.store" class="back">← colabos.store</a>
+
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-mark"><span>C</span></div>
+    <div>
+      <div class="logo-name">CoLAB OS</div>
+      <div class="logo-ver">v11 · Production</div>
+    </div>
+  </div>
+
+  <!-- Version live badge -->
+  <div class="version-row">
+    <div class="v-dot"></div>
+    <div class="v-tag">v11.0.0 — Latest</div>
+  </div>
+
+  <!-- Headline -->
+  <h1>How do you want to<br/><span>run CoLAB OS?</span></h1>
+  <p class="sub">The full OS. Your data stays yours. Pick the option that suits you — you can switch anytime.</p>
+
+  <!-- Option cards -->
+  <div class="cards">
+
+    <!-- Browser -->
+    <a href="https://app.colabos.store" class="card primary">
+      <span class="card-badge">No install needed</span>
+      <div class="card-icon">🌐</div>
+      <div class="card-title">Run in Browser</div>
+      <p class="card-desc">Open CoLAB OS instantly in any modern browser. No download. Works on any device including phone and tablet.</p>
+      <div class="card-cta">
+        Open in Browser
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    </a>
+
+    <!-- Desktop -->
+    <a href="#" class="card" id="dl-card" onclick="handleDownload(event)">
+      <span class="card-badge">Windows 10 / 11</span>
+      <div class="card-icon">💿</div>
+      <div class="card-title">Download for Desktop</div>
+      <p class="card-desc">Native Windows app. Offline-first. SQLite database on your machine. Faster performance. No internet required to run.</p>
+      <div class="card-cta" id="dl-cta">
+        Download .exe
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </div>
+      <div class="specs">
+        <span class="spec">v11.0.0</span>
+        <span class="spec">~48 MB</span>
+        <span class="spec">Windows 10/11 64-bit</span>
+        <span class="spec">Free</span>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- Trust strip -->
+  <div class="trust">
+    <div class="trust-item"><span>🔒</span> Your data stays on your device</div>
+    <div class="divider"></div>
+    <div class="trust-item"><span>⚡</span> No subscription</div>
+    <div class="divider"></div>
+    <div class="trust-item"><span>🛠️</span> One-time purchase</div>
+    <div class="divider"></div>
+    <div class="trust-item"><span>✦</span> Built for South African SMBs</div>
+  </div>
+
+</div>
+
+<script>
+// Download handler — update DOWNLOAD_URL once .exe is built and hosted
+var DOWNLOAD_URL = '';   // e.g. 'https://colabos.store/downloads/CoLAB-OS-v11-Setup.exe'
+
+function handleDownload(e) {
+  e.preventDefault();
+  if (DOWNLOAD_URL) {
+    window.location.href = DOWNLOAD_URL;
+    return;
+  }
+  // No .exe yet — show notify state
+  var card = document.getElementById('dl-card');
+  var cta  = document.getElementById('dl-cta');
+  cta.innerHTML = '✓ We\'ll notify you when ready';
+  cta.style.background = 'rgba(249,115,22,.15)';
+  cta.style.border     = '1px solid rgba(249,115,22,.25)';
+  cta.style.color      = '#f97316';
+  card.style.pointerEvents = 'none';
+  // Optional: track interest in localStorage
+  localStorage.setItem('colab_dl_interest', '1');
+}
+</script>
+</body>
+</html>

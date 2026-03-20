@@ -716,9 +716,19 @@ select.inp option { background: var(--bg-2); color: var(--text); }
      SCRIPTS — load order is critical
      app.js must always be last
 ═══════════════════════════════════════════ -->
+<!-- Supabase CDN — must load before all app scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
 <script src="js/data.js"></script>
 <script src="js/services.js"></script>
+<script src="js/supabase.js"></script>
+<!-- Domain services — loaded before page modules -->
+<script src="js/domain/validate.js"></script>
+<script src="js/domain/empty-states.js"></script>
+<script src="js/domain/finance.service.js"></script>
+<script src="js/domain/crm.service.js"></script>
+<script src="js/domain/projects.service.js"></script>
+<script src="js/domain/modals.js"></script>
 <script src="js/pages-finance.js"></script>
 <script src="js/pages-sales.js"></script>
 <script src="js/pages-projects.js"></script>

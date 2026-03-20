@@ -1,0 +1,95 @@
+{
+  "$schema": "../node_modules/@tauri-apps/cli/schema.json",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "devPath": "../",
+    "distDir": "../",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "CoLAB OS",
+    "version": "11.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false,
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "fs": {
+        "all": true,
+        "scope": ["$APPDATA/colab-os/*", "$DOCUMENT/*"]
+      },
+      "dialog": {
+        "all": true
+      },
+      "http": {
+        "all": true,
+        "scope": [
+          "https://colabos.store/*",
+          "https://app.colabos.store/*",
+          "https://*.supabase.co/*",
+          "https://api.anthropic.com/*",
+          "https://api.openai.com/*",
+          "https://*.lemonsqueezy.com/*",
+          "https://*.n8n.io/*",
+          "https://*.twilio.com/*"
+        ]
+      },
+      "notification": { "all": true }
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "store.colabos.app",
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      },
+      "resources": [],
+      "externalBin": [],
+      "copyright": "© 2026 CoLAB",
+      "category": "BusinessApplication",
+      "shortDescription": "Business Operating System for solo operators",
+      "longDescription": "CoLAB OS — Finance, CRM, Projects, Automations and Reporting in one owned, offline-first desktop application. No subscription. Your data stays on your device.",
+      "deb": { "depends": [] },
+      "macOS": {
+        "frameworks": [],
+        "minimumSystemVersion": "",
+        "exceptionDomain": "",
+        "signingIdentity": null,
+        "entitlements": null
+      }
+    },
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://*; img-src 'self' data:"
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": true,
+        "title": "CoLAB OS",
+        "width": 1280,
+        "height": 820,
+        "minWidth": 768,
+        "minHeight": 600,
+        "center": true,
+        "decorations": true,
+        "skipTaskbar": false
+      }
+    ]
+  }
+}
